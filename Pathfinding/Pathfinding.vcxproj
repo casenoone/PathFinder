@@ -173,9 +173,6 @@
     <ClInclude Include="triangle.h" />
     <ClInclude Include="vector3.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="c++语法不明白的地方的解释.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
