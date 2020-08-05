@@ -12,9 +12,7 @@ public:
 		return color(0, 0, 0);
 	}
 	
-	/*virtual bool scatter(
-		const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
-	) const = 0;*///这个const = 0是干啥的？//const与=0是两个东西，=0表示这是个纯虚函数
+	
 	virtual bool scatter(
 		const ray& r_in, const hit_record& rec, color& albedo, ray& scattered, double& pdf
 	) const {

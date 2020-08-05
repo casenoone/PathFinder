@@ -12,6 +12,9 @@ public:
 
 	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
+	virtual bool translation(const double &x,const double &y,const double &z);
+	virtual bool rotate();
+	virtual bool scale(const double &sx, const double &sy, const double &sz);
 public:
 	point3 center;
 	double radius;
@@ -57,6 +60,20 @@ bool sphere::bounding_box(double t0, double t1, aabb& output_box) const {
 	return true;
 }
 
+bool sphere::translation(const double &x,const double &y,const double &z) {
+
+	this->center.translate_vector(x, y, z);
+	return true;
+}
+
+bool sphere::rotate() {
+	return false;
+}
+
+bool sphere::scale(const double &sx, const double &sy, const double &sz) {
+	this->radius *= sx;
+	return false;
+}
 
 //这个函数有个疑问，u与v的计算公式是什么意思？phi和theta的计算是不是出错了？应该不是，是坐标系不同导致公式不同
 void get_sphere_uv(const vec3& p, double& u, double& v) {//这个函数的功能是把p点的xyz坐标转换成uv坐标

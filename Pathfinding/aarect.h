@@ -45,6 +45,10 @@ public:
 		return random_point - origin;
 	}
 
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
+
 public:
 	point3 center;
 	double radius;
@@ -96,7 +100,9 @@ public:
 		return true;
 	}
 
-
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 
 public:
 	shared_ptr<material> mp;
@@ -137,6 +143,10 @@ public:
 		return random_point - origin;
 	}
 
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
+
 public:
 	shared_ptr<material> mp;
 	double x0, x1, z0, z1, k;
@@ -157,6 +167,10 @@ public:
 		output_box = aabb(point3(k - 0.0001, y0, z0), point3(k + 0.0001, y1, z1));
 		return true;
 	}
+
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 
 public:
 	shared_ptr<material> mp;

@@ -18,9 +18,14 @@ class hittable_list: public hittable {
 
 		virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
 		virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
-	public:
+		
+		virtual bool translation(const double &x, const double &y, const double &z);
+		virtual bool rotate();
+		virtual bool scale(const double &sx, const double &sy, const double &sz);
+public:
 		std::vector<shared_ptr<hittable>> objects;//构建一个shared_ptr<hittable>类型的名叫objects的容器
 };
+
 
 bool hittable_list::hit(const ray& r, double t_min, double t_max, hit_record& rec) const {
 	hit_record temp_rec;
@@ -39,6 +44,8 @@ bool hittable_list::hit(const ray& r, double t_min, double t_max, hit_record& re
 	return hit_anything;
 }
 
+
+
 //这个函数的作用？//应该是求一堆物体的整体包围盒
 bool hittable_list::bounding_box(double t0, double t1, aabb& output_box) const {//所以这个函数目的是求最大包围盒？//确实是这样，但是如果空间中有无限大平面，该怎么处理？//无限大平面是没有包围盒的
 	if (objects.empty()) return false;
@@ -52,6 +59,24 @@ bool hittable_list::bounding_box(double t0, double t1, aabb& output_box) const {
 	}
 	
 	return true;
+}
+
+bool hittable_list::translation(const double &x, const double &y, const double &z) {
+	for (auto iter = objects.begin(); iter != objects.end(); iter++) {
+		(*iter)->translation(x,y,z);
+	}
+	return true;
+}
+
+bool hittable_list::scale(const double &sx, const double &sy, const double &sz) {
+	for (auto iter = objects.begin(); iter != objects.end(); iter++) {
+		(*iter)->scale(sx, sy, sz);
+	}
+	return true;
+}
+
+bool hittable_list::rotate() {
+	return false;
 }
 
 #endif

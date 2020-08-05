@@ -17,6 +17,10 @@ public:
 		return true;
 	}
 
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
+
 public:
 	point3 box_min;
 	point3 box_max;

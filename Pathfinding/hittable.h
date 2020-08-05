@@ -31,6 +31,10 @@ public:
 	virtual vec3 random(const vec3& o) const {
 		return vec3(1, 0, 0);
 	}
+
+	virtual bool translation(const double &x, const double &y, const double &z)  = 0;
+	virtual bool rotate() = 0;
+	virtual bool scale(const double &sx, const double &sy, const double &sz)  = 0;
 };
 
 
@@ -52,6 +56,10 @@ public:
 		return ptr->bounding_box(t0, t1, output_box);
 	}
 
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
+
 public:
 	shared_ptr<hittable> ptr;
 };
@@ -64,7 +72,9 @@ public:
 
 	virtual bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const;
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
-
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 public:
 	shared_ptr<hittable> ptr;
 	vec3 offset;
@@ -102,6 +112,9 @@ public:
 		output_box = bbox;
 		return hasbox;
 	}
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 
 public:
 	shared_ptr<hittable> ptr;

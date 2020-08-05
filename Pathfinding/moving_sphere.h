@@ -14,6 +14,9 @@ public:
 	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
 	point3 center(double time) const;
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 
 public:
 	point3 center0, center1;

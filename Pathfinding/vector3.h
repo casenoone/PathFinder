@@ -57,16 +57,22 @@ class vec3 {
 			return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
 		}
 
-		inline void constrain_scale_vector(double s) {
+		inline void constrain_scale_vector(const double &s) {
 			this->e[0] *= s;
 			this->e[1] *= s;
 			this->e[2] *= s;
 		}
 
-		inline void translate_vector(double x, double y, double z) {
+		inline void translate_vector(const double &x, const double &y, const double &z) {
 			this->e[0] += x;
 			this->e[1] += y;
 			this->e[2] += z;
+		}
+
+		inline void scale_vector(const double &sx,const double &sy,const double &sz) {
+			this->e[0] *= sx;
+			this->e[1] *= sy;
+			this->e[2] *= sz;
 		}
 
 	public:

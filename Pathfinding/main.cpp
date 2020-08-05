@@ -42,13 +42,7 @@ bool read_obj(objl::Loader Loader,hittable_list &box,string &filename, shared_pt
 			point3 A = point3(curMesh.Vertices[a].Position.X, curMesh.Vertices[a].Position.Y, curMesh.Vertices[a].Position.Z);
 			point3 B = point3(curMesh.Vertices[b].Position.X, curMesh.Vertices[b].Position.Y, curMesh.Vertices[b].Position.Z);
 			point3 C = point3(curMesh.Vertices[c].Position.X, curMesh.Vertices[c].Position.Y, curMesh.Vertices[c].Position.Z);
-			A.constrain_scale_vector(1500);
-			B.constrain_scale_vector(1500);
-			C.constrain_scale_vector(1500);
-			
-			A.translate_vector(200, 0, 200);
-			B.translate_vector(200, 0, 200);
-			C.translate_vector(200, 0, 200);
+		
 			shared_ptr<hittable> box1 = make_shared<triangle>(A, B, C, m);
 			
 			box.add(box1);
@@ -105,7 +99,7 @@ hittable_list earth() {
 
 
 
-hittable_list cornell_box(camera& cam, double aspect) {//思考一个问题，为什么说light是双面的？
+hittable_list cornell_box(camera& cam, double aspect) {
 	hittable_list world;
 
 	auto red = make_shared<lambertian>(make_shared<solid_color>(.65, .05, .05));
@@ -124,7 +118,6 @@ hittable_list cornell_box(camera& cam, double aspect) {//思考一个问题，为什么说l
 	world.add(make_shared<xz_rect>(0, 555, 0, 555, 0, white));
 	world.add(make_shared<xy_rect>(0, 555, 0, 555, 555, white));
 
-	//康奈尔盒子里除去长方体共有6个面，上面代码也添加了6个面，那么为什么说light是双面的呢
 
 	shared_ptr<hittable> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165), white);
 	box1 = make_shared<rotate_y>(box1, 15);
@@ -155,7 +148,10 @@ hittable_list cornell_box(camera& cam, double aspect) {//思考一个问题，为什么说l
 	//world.add(make_shared<bvh_node>(boxes1, 0, 1));
 	string filename = "box_stack.obj";
 	read_obj(Loader, boxes1, filename, white);
-	//cout << boxes1.objects.size();
+
+	boxes1.scale(1500,1500,1500);
+	boxes1.translation(200, 0, 200);
+
 
 	world.add(make_shared<bvh_node>(boxes1, 0, 1));
 	
@@ -180,7 +176,7 @@ int main() {
 	const auto aspect_ratio = 16.0 / 9.0;   
 	const int image_width = 512;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
-	const int samples_per_pixel = 10000;
+	const int samples_per_pixel = 10;
 	const int max_depth = 50;
 
 	auto viewport_height = 2.0;
@@ -227,7 +223,7 @@ int main() {
 
 			}
 
-			//由于暂时不清楚oufile的机理，下面代码是将writhe_color函数拆开以后的，学完原理之后再修改这些细节
+			//由于暂时不清楚oufile的机理，下面代码是将write_color函数拆开以后的，学完原理之后再修改这些细节
 			
 			auto R = pixel_color.x();
 			auto G = pixel_color.y();

@@ -11,6 +11,10 @@ public:
 		:P0(a), P1(b), P2(c), mat_ptr(m){};
 	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
+	virtual bool translation(const double &x,const double &y,const double &z);
+	virtual bool rotate();
+	virtual bool scale(const double &sx, const double &sy, const double &sz);
+
 
 public:
 	point3 P0;
@@ -92,6 +96,24 @@ bool triangle::bounding_box(double t0, double t1, aabb& output_box) const {//Èý½
 	return true;
 }
 
+bool triangle::translation(const double &x,const double &y,const double &z) {
+	P0.translate_vector(x, y, z);
+	P1.translate_vector(x, y, z);
+	P2.translate_vector(x, y, z);
 
+	return true;
+}
+
+bool triangle::rotate() {
+	return false;
+}
+
+bool triangle::scale(const double &sx, const double &sy, const double &sz) {
+	P0.scale_vector(sx, sy, sz);
+	P1.scale_vector(sx, sy, sz);
+	P2.scale_vector(sx, sy, sz);
+
+	return true;
+}
 
 #endif

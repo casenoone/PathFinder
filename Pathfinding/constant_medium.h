@@ -14,6 +14,9 @@ public:
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const {
 		return boundary->bounding_box(t0, t1, output_box);
 	}
+	virtual bool translation(const double &x, const double &y, const double &z) { return false; }
+	virtual bool rotate() { return false; }
+	virtual bool scale(const double &sx, const double &sy, const double &sz) { return false; }
 
 public:
 	shared_ptr<hittable> boundary;
