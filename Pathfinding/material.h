@@ -45,7 +45,7 @@ public:
 		auto direction = uvw.local(random_cosine_direction());
 		scattered = ray(rec.p, unit_vector(direction), r_in.time());
 		alb = albedo->value(rec.u, rec.v, rec.p);
-		//pdf = dot(uvw.w(), scattered.direction()) / pi;
+		pdf = dot(uvw.w(), scattered.direction()) / pi;
 		return true;
 	}
 
@@ -61,35 +61,6 @@ public:
 
 class metal : public material {
 public:
-	metal(shared_ptr<texture> a) : albedo(a) {}
-
-	virtual bool scatter(
-		const ray& r_in, const hit_record& rec, color& alb, ray& scattered, double& pdf
-	) const {
-		
-		onb uvw;
-		uvw.build_from_w(rec.normal);
-		vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-		scattered = ray(rec.p, reflected);
-		alb = albedo->value(rec.u, rec.v, rec.p);
-		pdf = dot(uvw.w(), scattered.direction()) / pi;
-		return true;
-	}
-
-	double scattering_pdf(//其实就是BRDF
-		const ray& r_in, const hit_record& rec, const ray& scattered
-	) const {
-		auto cosine = dot(rec.normal, unit_vector(scattered.direction()));
-		return cosine < 0 ? 0 :1;
-	}
-
-public:
-	shared_ptr<texture> albedo;
-};
-
-
-/*class metal : public material {
-public:
 	metal(const color& a) : albedo(a) {}
 
 	virtual bool scatter(
@@ -103,7 +74,7 @@ public:
 
 public:
 	color albedo;
-};*/
+};
 
 double schlick(double cosine, double ref_idx) {
 	auto r0 = (1 - ref_idx) / (1 + ref_idx);
@@ -112,7 +83,7 @@ double schlick(double cosine, double ref_idx) {
 }
 
 
-/*class dielectric : public material {
+class dielectric : public material {
 public:
 	dielectric(double ri) : ref_idx(ri) {}
 
@@ -147,48 +118,6 @@ public:
 public:
 	double ref_idx;
 };
-*/
-
-
-class dielectric : public material {
-public:
-	dielectric(double ri) : ref_idx(ri) {}
-
-	virtual bool scatter(
-		const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
-	) const {
-		attenuation = color(1.0, 1.0, 1.0);//纯白
-		
-		//
-		double etai_over_etat = (rec.front_face) ? (1.0 / ref_idx) : (ref_idx);
-
-		vec3 unit_direction = unit_vector(r_in.direction());
-		double cos_theta = fmin(dot(-unit_direction, rec.normal), 1.0);
-		double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
-		if (etai_over_etat * sin_theta > 1.0) {
-			vec3 reflected = reflect(unit_direction, rec.normal);
-			scattered = ray(rec.p, reflected);
-			return true;
-		}
-
-		double reflect_prob = schlick(cos_theta, etai_over_etat);
-		if (random_double() < reflect_prob)
-		{
-			vec3 reflected = reflect(unit_direction, rec.normal);
-			scattered = ray(rec.p, reflected);
-			return true;
-		}
-
-		vec3 refracted = refract(unit_direction, rec.normal, etai_over_etat);
-		scattered = ray(rec.p, refracted);
-		return true;
-	}
-
-public:
-	double ref_idx;
-};
-
-
 
 class diffuse_light : public material {
 public:

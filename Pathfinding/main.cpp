@@ -76,13 +76,11 @@ color ray_color(const ray& r, const color& background, const hittable& world, sh
 		make_shared<xz_rect>(213, 343, 227, 332, 554, make_shared<material>());
 	auto p0 = make_shared<hittable_pdf>(light_shape, rec.p);
 	auto p1 = make_shared<cosine_pdf>(rec.normal);
-	//auto p2 = make_shared<uniform_pdf>(rec.normal); //均匀采样
 	mixture_pdf p(p0, p1);
 
 	scattered = ray(rec.p, p.generate(), r.time());
 	pdf_val = p.value(scattered.direction());
 
-	//LTE方程
 	return emitted
 		+ albedo * rec.mat_ptr->scattering_pdf(r, rec, scattered)
 		* ray_color(scattered, background, world, lights, depth - 1)
@@ -110,8 +108,6 @@ hittable_list cornell_box(camera& cam, double aspect) {
 	auto blue = make_shared<lambertian>(make_shared<solid_color>(.55, .93, .93));
 	auto light = make_shared<diffuse_light>(make_shared<solid_color>(50, 50, 50));
 	
-	auto blues = make_shared<metal>(make_shared<solid_color>(0.7, 0.6, 0.5));
-
 	//思考一下，flip_face与yz_rect的区别//flip是翻转的意思，就是添加一个与原来面法线相反的面
 	world.add(make_shared<yz_rect>(0, 555, 0, 555, 555, green));
 	world.add(make_shared<yz_rect>(0, 555, 0, 555, 0, red));
@@ -139,7 +135,7 @@ hittable_list cornell_box(camera& cam, double aspect) {
 	auto earth_texture = make_shared<image_texture>("earthmap.jpg");
 	auto earth_surface = make_shared<lambertian>(earth_texture);
 	auto globe = make_shared<sphere>(point3(200, 100, 165), 60, blue);
-	world.add(globe);
+	//world.add(globe);
 
 	hittable_list boxes1;
 	//boxes1.add(globe);
@@ -151,15 +147,13 @@ hittable_list cornell_box(camera& cam, double aspect) {
 	//world.add(tri);
 	//world.add(make_shared<bvh_node>(boxes1, 0, 1));
 	string filename = "box_stack.obj";
-	//read_obj(Loader, boxes1, filename, white);
+	read_obj(Loader, boxes1, filename, white);
 
-	//boxes1.scale(1500,1500,1500);
-	//boxes1.translation(200, 0, 200);
+	boxes1.scale(1500,1500,1500);
+	boxes1.translation(200, 0, 200);
 
 
-	//world.add(make_shared<bvh_node>(boxes1, 0, 1));
-	
-
+	world.add(make_shared<bvh_node>(boxes1, 0, 1));
 	
 
 	point3 lookfrom(278, 278, -800);
