@@ -87,7 +87,7 @@ color ray_color(const ray& r, const color& background, const hittable& world, sh
 		/ pdf_val;
 }
 
-
+//
 
 hittable_list earth() {
 	auto earth_texture = make_shared<image_texture>("earthmap.jpg");
