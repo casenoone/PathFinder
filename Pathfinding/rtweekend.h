@@ -44,9 +44,26 @@ inline double clamp(double x, double min, double max) {
 	if (x > max) return max;
 	return x;
 }
+
+inline double rmin(const double &x, const double &y) {
+	double temp;
+	if (x <= y) {
+		return x;
+	}
+	return y;
+}
+
+
+inline double rmax(const double &x, const double &y) {
+	double temp;
+	if (x > y) {
+		return x;
+	}
+	return y;
+}
+
 // Common Headers
 
 #include "ray.h"
 #include "vector3.h"
-
 #endif

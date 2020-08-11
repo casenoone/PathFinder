@@ -1,17 +1,37 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+/*#ifndef CYLINDER_H
+#define CYLINDER_H
 
 #include "hittable.h"
 #include "vector3.h"
 
-class triangle :public hittable {
+class cylinder :public hittable {
+
 public:
-	triangle(){}
-	triangle(point3 a, point3 b, point3 c, shared_ptr<material> m)
-		:P0(a), P1(b), P2(c), mat_ptr(m){};
+	cylinder(){}
+	cylinder(double rad,double z0,double z1,double pm, shared_ptr<material> m):radius(rad),zmin(rmin(z0,z1)),zmax(rmax(z0,z1)),phimax(clamp(pm,0,2*pi)), mat_ptr(m){}
+	
 	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
 	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
-	virtual bool translation(const double &x,const double &y,const double &z);
+
+
+public:
+	double radius;
+	double zmin;
+	double zmax;
+	double phimax;
+	shared_ptr<material> mat_ptr;
+};
+
+
+
+class triangle :public hittable {
+public:
+	triangle() {}
+	triangle(point3 a, point3 b, point3 c, shared_ptr<material> m)
+		:P0(a), P1(b), P2(c), mat_ptr(m) {};
+	virtual bool hit(const ray& r, double tmin, double tmax, hit_record& rec) const;
+	virtual bool bounding_box(double t0, double t1, aabb& output_box) const;
+	virtual bool translation(const double &x, const double &y, const double &z);
 	virtual bool rotate();
 	virtual bool scale(const double &sx, const double &sy, const double &sz);
 
@@ -31,7 +51,7 @@ bool triangle::hit(const ray& r, double t_min, double t_max, hit_record& rec) co
 	point3 S = r.origin() - P0;
 	point3 S1 = cross(r.direction(), E2);
 	point3 S2 = cross(S, E1);
-	
+
 	double temp1 = 1 / (dot(S1, E1));
 	double t = temp1*(dot(S2, E2));
 	double b1 = temp1*(dot(S1, S));
@@ -41,7 +61,7 @@ bool triangle::hit(const ray& r, double t_min, double t_max, hit_record& rec) co
 		if (t < t_max && t > t_min) {
 			rec.t = t;
 			rec.p = r.at(rec.t);
-			vec3 outward_normal = unit_vector(cross(E1,E2));
+			vec3 outward_normal = unit_vector(cross(E1, E2));
 			rec.set_face_normal(r, outward_normal);
 			rec.mat_ptr = mat_ptr;
 			return true;
@@ -91,12 +111,12 @@ bool triangle::bounding_box(double t0, double t1, aabb& output_box) const {//Èý½
 		center - vec3(radius, radius, radius),
 		center + vec3(radius, radius, radius)
 	);
-	
+
 
 	return true;
 }
 
-bool triangle::translation(const double &x,const double &y,const double &z) {
+bool triangle::translation(const double &x, const double &y, const double &z) {
 	P0.translate_vector(x, y, z);
 	P1.translate_vector(x, y, z);
 	P2.translate_vector(x, y, z);
@@ -116,4 +136,4 @@ bool triangle::scale(const double &sx, const double &sy, const double &sz) {
 	return true;
 }
 
-#endif
+#endif*/

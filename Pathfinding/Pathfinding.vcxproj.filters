@@ -83,5 +83,8 @@
     <ClInclude Include="matrix.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="cylinder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

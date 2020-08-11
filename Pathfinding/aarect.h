@@ -27,7 +27,6 @@ public:
 			return 0;
 
 		auto area = pi*radius*radius;
-		//auto area = (A.x() - B.x())*(A.z() - B.z());
 		auto distance_squared = rec.t * rec.t * v.length_squared();
 		auto cosine = fabs(dot(v, rec.normal) / v.length());
 
@@ -84,7 +83,7 @@ bool xz_circle::hit(const ray& r, double t0, double t1, hit_record& rec)const {
 
 }
 
-class xy_rect : public hittable { //由于矩形的包围盒会被无限细分，所以这里要做一些处理，怎么处理的这里没有看懂。。。
+class xy_rect : public hittable { 
 public:
 	xy_rect() {}
 

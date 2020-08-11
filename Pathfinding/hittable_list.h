@@ -12,7 +12,7 @@ using std::make_shared;
 class hittable_list: public hittable {
 	public:
 		hittable_list() {}
-		hittable_list(shared_ptr<hittable> object) { add(object); }//shared_ptr是共享指针，至于为什么使用共享指针，暂时还搞不清楚，等写完第一周的程序后集中讨论这些问题
+		hittable_list(shared_ptr<hittable> object) { add(object); }//shared_ptr是共享指针，至于为什么使用共享指针，除了可以自动回收内存，暂时还搞不清楚其他作用，例如书中提到与纹理有关的情况
 		void clear() { objects.clear(); }
 		void add(shared_ptr<hittable> object) { objects.push_back(object); }
 
@@ -23,7 +23,7 @@ class hittable_list: public hittable {
 		virtual bool rotate();
 		virtual bool scale(const double &sx, const double &sy, const double &sz);
 public:
-		std::vector<shared_ptr<hittable>> objects;//构建一个shared_ptr<hittable>类型的名叫objects的容器
+		std::vector<shared_ptr<hittable>> objects;
 };
 
 
@@ -31,13 +31,14 @@ bool hittable_list::hit(const ray& r, double t_min, double t_max, hit_record& re
 	hit_record temp_rec;
 	bool hit_anything = false;
 	auto closest_so_far = t_max;
-	//这里的const auto&是传指针的引用值吗？是的，如果不传引用，那么objects里的元素的值不会改变，只是形参发生了改变
-	for (const auto& object : objects) {//这是什么写法？//表示依次取出objects容器中的元素//但是objects为什么可以是auto类型？//因为auto变量可以根据变量值自动匹配类型，明白了！
+	
+	for (const auto& object : objects) {
 		if (object->hit(r, t_min, closest_so_far, temp_rec)) {
 			hit_anything = true;
 			closest_so_far = temp_rec.t;
 			rec = temp_rec;
 			random_double();
+			
 		}
 	}
 	
