@@ -1,6 +1,7 @@
 #ifndef AARECT_H
 #define AARECT_H
 #include "hittable.h"
+#include <cmath>
 
 class xz_circle :public hittable {
 
@@ -33,7 +34,7 @@ public:
 		return distance_squared / (cosine * area);
 	}
 
-	virtual vec3 random(const point3& origin) const override {
+	/*virtual vec3 random(const point3& origin) const override { //�ܵ㷨
   
 		auto random_point = point3(random_double(A.x(), B.x()), center.y(), random_double(A.z(), B.z()));
 		double dis = (random_point - center).length();
@@ -42,6 +43,22 @@ public:
 			dis = (random_point - center).length();
 		}
 		return random_point - origin;
+	}*/
+
+	virtual vec3 random(const point3& origin)const override {
+
+		double temp1 = random_double(0, 1);
+		double temp2 = random_double(0, 1);
+		double temp_r = sqrt(temp1);
+
+		double temp_theta = 2 * pi*temp2;
+		double x = temp_r*cos(temp_theta);
+		double z = temp_r*sin(temp_theta);
+
+		x = A.x() + x * (B.x() - A.x());
+		z = A.z() + z * (B.z() - A.z());
+
+		return point3(x, center.y(), z) - origin;
 	}
 
 	virtual bool translation(const double &x, const double &y, const double &z) { return false; }

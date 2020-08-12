@@ -72,8 +72,11 @@ color ray_color(const ray& r, const color& background, const hittable& world, sh
 	if (!rec.mat_ptr->scatter(r, rec, albedo, scattered, pdf_val))
 		return emitted;
 
+	/*shared_ptr<hittable> light_shape =
+		make_shared<xz_rect>(213, 343, 227, 332, 554, make_shared<material>());*/
+	//world.add(make_shared<flip_face>(make_shared<xz_circle>(point3(277.5,554,277.5),70,light)));
 	shared_ptr<hittable> light_shape =
-		make_shared<xz_rect>(213, 343, 227, 332, 554, make_shared<material>());
+		make_shared<xz_circle>(point3(277.5, 554, 277.5),70, make_shared<material>());
 	auto p0 = make_shared<hittable_pdf>(light_shape, rec.p);
 	auto p1 = make_shared<cosine_pdf>(rec.normal);
 	mixture_pdf p(p0, p1);
@@ -111,8 +114,8 @@ hittable_list cornell_box(camera& cam, double aspect) {
 	//思考一下，flip_face与yz_rect的区别//flip是翻转的意思，就是添加一个与原来面法线相反的面
 	world.add(make_shared<yz_rect>(0, 555, 0, 555, 555, green));
 	world.add(make_shared<yz_rect>(0, 555, 0, 555, 0, red));
-	world.add(make_shared<flip_face>(make_shared<xz_rect>(213, 343, 227, 332, 554, light)));
-	//world.add(make_shared<flip_face>(make_shared<xz_circle>(point3(277.5,554,277.5),70,light)));
+	//world.add(make_shared<flip_face>(make_shared<xz_rect>(213, 343, 227, 332, 554, light)));
+	world.add(make_shared<flip_face>(make_shared<xz_circle>(point3(277.5,554,277.5),70,light)));
 	
 	world.add(make_shared<xz_rect>(0, 555, 0, 555, 555, white));
 	world.add(make_shared<xz_rect>(0, 555, 0, 555, 0, white));

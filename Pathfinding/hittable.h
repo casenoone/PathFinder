@@ -29,7 +29,8 @@ public:
 	}
 
 	virtual vec3 random(const vec3& o) const {
-		return vec3(1, 0, 0);
+		//std::cout << 444;
+		return vec3(0, 0, 0);
 	}
 
 	virtual bool translation(const double &x, const double &y, const double &z)  = 0;

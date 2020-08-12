@@ -50,6 +50,7 @@ public:
 	}
 
 	virtual vec3 generate() const override {
+
 		return ptr->random(o);
 	}
 
@@ -73,9 +74,13 @@ public:
 
 	virtual vec3 generate() const override {
 		if (random_double() < 0.5)
+		{
 			return p[0]->generate();
+		}
 		else
+		{
 			return p[1]->generate();
+		}
 	}
 
 public:
